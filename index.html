@@ -171,6 +171,32 @@
         button:hover {
             background: #4e8a42;
         }
+          .cookie-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #fff8dc;
+            border-top: 2px solid #68a357;
+            padding: 15px 20px;
+            text-align: center;
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+            font-size: 1em;
+            display: none; /* Standardmäßig ausgeblendet */
+            z-index: 9999;
+        }
+        .cookie-banner button {
+            background: #68a357;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .cookie-banner button:hover {
+            background: #4e8a42;
+        }
     </style>
 </head>
 <body>
@@ -178,6 +204,11 @@
         <h1>Gärtnerei Galler</h1>
         <p>Blumen, Kränze und Grabpflege mit Herz</p>
     </header>
+     <!-- Cookie-Banner -->
+    <div id="cookieBanner" class="cookie-banner">
+        <p>Diese Webseite verwendet Cookies, um Ihnen ein besseres Nutzererlebnis zu bieten. Durch die Nutzung der Webseite stimmen Sie der Verwendung von Cookies zu. <a href="#privacy">Datenschutzerklärung</a></p>
+        <button id="acceptCookies">Ich stimme zu</button>
+    </div>
     <nav>
         <a href="#about">Über uns</a>
         <a href="#services">Leistungen</a>
@@ -189,6 +220,61 @@
     <div style="text-align: center; margin: 20px;">
         <button id="toggleFontSize">Schrift vergrößern</button>
     </div>
+    
+      <!-- Google Tag -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CJCBYDCYHY"></script>
+    <script>
+        // Funktion zum Setzen von Cookies
+        function setCookie(name, value, days) {
+            const d = new Date();
+            d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+            let expires = "expires=" + d.toUTCString();
+            document.cookie = name + "=" + value + ";" + expires + ";path=/";
+        }
+
+        // Funktion zum Abrufen eines Cookies
+        function getCookie(name) {
+            let decodedCookie = decodeURIComponent(document.cookie);
+            let ca = decodedCookie.split(';');
+            let cookieName = name + "=";
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) === ' ') c = c.substring(1);
+                if (c.indexOf(cookieName) === 0) return c.substring(cookieName.length, c.length);
+            }
+            return "";
+        }
+
+        // Cookie-Banner anzeigen, wenn keine Zustimmung vorliegt
+        window.onload = function() {
+            if (!getCookie("cookiesAccepted")) {
+                document.getElementById("cookieBanner").style.display = "block";
+            }
+        };
+
+        // Zustimmung verarbeiten
+        document.getElementById("acceptCookies").addEventListener("click", function() {
+            setCookie("cookiesAccepted", "true", 365);
+            document.getElementById("cookieBanner").style.display = "none";
+
+            // Google Analytics aktivieren
+            loadGoogleTag();
+        });
+
+        // Google Tag aktivieren
+        function loadGoogleTag() {
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-CJCBYDCYHY'); // Deine Google Tag ID
+        }
+
+        // Falls die Zustimmung bereits vorliegt, Google Tag direkt laden
+        if (getCookie("cookiesAccepted")) {
+            loadGoogleTag();
+        }
+    </script>
+    
     <section id="about">
         <h2>Über uns</h2>
         <p>
@@ -224,12 +310,12 @@
      </section>
     <section id="hours" class="hours-container">
         <h3>Unsere Öffnungszeiten</h3>
-        <p><strong>Montag:</strong> 09:00 - 12:30, 14:30 - 18:00</p>
-        <p><strong>Dienstag:</strong> 09:00 - 12:30, 14:30 - 18:00</p>
-        <p><strong>Mittwoch:</strong> 09:00 - 12:30, 14:30 - 18:00</p>
-        <p><strong>Donnerstag:</strong> 09:00 - 12:30, 14:30 - 18:00</p>
-        <p><strong>Freitag:</strong> 09:00 - 12:30, 14:30 - 18:00</p>
-        <p><strong>Samstag:</strong> 09:00 - 13:00</p>
+        <p><strong>Montag:</strong> 09:00 - 12:30, 15:00 - 18:00</p>
+        <p><strong>Dienstag:</strong> 09:00 - 12:30, 15:00 - 18:00</p>
+        <p><strong>Mittwoch:</strong> 09:00 - 12:30, 15:00 - 18:00</p>
+        <p><strong>Donnerstag:</strong> 09:00 - 12:30, 15:00 - 18:00</p>
+        <p><strong>Freitag:</strong> 09:00 - 12:30, 15:00 - 18:00</p>
+        <p><strong>Samstag:</strong> 09:00 - 14:00</p>
         <p><strong>Sonntag:</strong> Geschlossen</p>
     </section>
     <section id="reviews">
